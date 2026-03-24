@@ -1,0 +1,484 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dark & Darker Beginner's Companion</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- Presentation (first screen) -->
+  <div id="presentation" class="presentation">
+    <div class="presentation__card">
+      <div class="presentation__meta">CCT250 A6 Final Demo • Group 2</div>
+      <h1 class="presentation__title">Dark &amp; Darker<br/>Beginner's Companion</h1>
+      <div class="presentation__subtitle">A quick-start guide for new players in their first few hours</div>
+
+      <button id="btnStartPrototype" class="btn btn--primary btn--xl">
+        <span class="btn__icon">▶</span>
+        <span class="btn__text">Start Prototype</span>
+      </button>
+
+      <p class="presentation__desc">Take a short quiz, get a recommended class, and use beginner-friendly guides to survive your first dungeon run.</p>
+      <div class="presentation__hint">Click <b>Start Prototype</b> to begin the full demo experience.</div>
+      <div class="presentation__foot">Final deliverable demo • mobile-first interactive website</div>
+    </div>
+  </div>
+
+  <!-- Floating Back Button -->
+  <button id="btnBack" class="fab fab--left" title="Back" aria-label="Back">
+    ←
+  </button>
+
+  <!-- Floating Menu Button -->
+  <button id="btnMenu" class="fab fab--right" title="Menu" aria-label="Menu">
+    ☰
+  </button>
+
+  <!-- Menu Overlay + Drawer -->
+  <div id="menuOverlay" class="overlay hidden"></div>
+  <aside id="menuDrawer" class="drawer hidden" aria-label="Navigation menu">
+    <div class="drawer__spacer"></div>
+    <div class="drawer__list">
+      <a href="#home" class="drawer__item" data-route="home">
+        <span class="drawer__ico">⌂</span>
+        <span>Home</span>
+      </a>
+      <a href="#quiz" class="drawer__item" data-route="quiz">
+        <span class="drawer__ico">☑</span>
+        <span>Quiz</span>
+      </a>
+      <a href="#monsters" class="drawer__item" data-route="monsters">
+        <span class="drawer__ico">⚔</span>
+        <span>Combat</span>
+      </a>
+      <a href="#gold" class="drawer__item" data-route="gold">
+        <span class="drawer__ico">⛁</span>
+        <span>Gold</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main App Background -->
+  <div id="app" class="app hidden">
+
+    <main class="shell">
+      <!-- ROUTE: Home / MainApp container -->
+      <section id="route_home" class="route">
+        <div class="panel">
+          <!-- Landing Screen -->
+          <div id="landingScreen" class="screen">
+            <div class="landing__hero">
+              <div class="landing__badge">
+                <span class="badge__icon">⚔</span>
+              </div>
+
+              <h1 class="landing__title">Dark &amp; Darker</h1>
+              <div class="landing__subtitle">Beginner's Companion</div>
+              <p class="landing__desc">
+                New to Dark and Darker? Take a quick 2-minute quiz to find your ideal class, get a beginner-friendly recommendation, and prepare for your first dungeon run.
+              </p>
+            </div>
+
+            <div class="landing__highlights">
+              <div class="landingStat">
+                <div class="landingStat__k">Who it's for</div>
+                <div class="landingStat__v">0–10 hour players</div>
+              </div>
+              <div class="landingStat">
+                <div class="landingStat__k">Main flow</div>
+                <div class="landingStat__v">Quiz → Class → Checklist</div>
+              </div>
+              <div class="landingStat">
+                <div class="landingStat__k">Why it helps</div>
+                <div class="landingStat__v">Faster than long wikis</div>
+              </div>
+            </div>
+
+            <div class="landing__cta">
+              <button id="btnFindClass" class="btn btn--primary btn--lg btn--full">
+                <span class="btn__text">Find Your Class</span>
+                <span class="btn__icon">→</span>
+              </button>
+              <button id="btnSkipQuiz" class="link link--muted">skip quiz and preview a sample result</button>
+            </div>
+
+            <div class="landing__cards">
+              <div class="grid2">
+                <!-- ✅ Added card--feature for same size & polish -->
+                <button class="card card--click card--feature" data-nav="#class-selection">
+                  <div class="card__ico card__ico--amber">⚔</div>
+                  <div class="card__body">
+                    <div class="card__title">Browse All Classes</div>
+                    <div class="card__text">Find your perfect group role</div>
+                  </div>
+                </button>
+
+                <button class="card card--click card--feature" data-nav="#mechanics">
+                  <div class="card__ico card__ico--amber">📜</div>
+                  <div class="card__body">
+                    <div class="card__title">Dungeon Mechanics</div>
+                    <div class="card__text">Core gameplay systems</div>
+                  </div>
+                </button>
+              </div>
+
+              <div class="landing__more">
+                <div class="landing__moreLabel">More beginner guides:</div>
+                <div class="chips">
+                  <button class="chip" data-nav="#monsters"><span class="chip__ico chip__ico--red">⚔</span>Combat Tutorial</button>
+                  <button class="chip" data-nav="#gold"><span class="chip__ico chip__ico--yellow">⛁</span>Gold Guide</button>
+                  <button class="chip" data-nav="#artifacts"><span class="chip__ico chip__ico--purple">✦</span>Artifacts</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quiz Screen -->
+          <div id="quizScreen" class="screen hidden">
+            <div class="quiz__header">
+              <div class="quiz__meta">
+                <span id="quizMetaLeft">Question 1 of 5</span>
+                <span id="quizMetaRight">20%</span>
+              </div>
+              <div class="progress">
+                <div id="progressBar" class="progress__bar" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <div class="quiz__body">
+              <div class="quiz__intro">Answer a few quick questions about your playstyle. We'll match you with the class that feels most natural for your first runs.</div>
+              <h2 id="quizQuestion" class="quiz__question"></h2>
+              <div id="quizOptions" class="quiz__options"></div>
+            </div>
+
+            <div class="quiz__footer">
+              <button id="btnQuizBack" class="btn btn--ghost">
+                <span class="btn__icon">←</span>
+                <span class="btn__text">Back</span>
+              </button>
+
+              <div class="quiz__footerRight">
+                <div id="quizError" class="quiz__error hidden">Please select an option to continue</div>
+                <button id="btnQuizNext" class="btn btn--primary">
+                  <span id="btnQuizNextText" class="btn__text">Next Question</span>
+                  <span class="btn__icon">→</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Result Screen -->
+          <div id="resultScreen" class="screen hidden">
+            <div class="result__wrap">
+              <div class="resultCard">
+                <div class="resultCard__topLine"></div>
+
+                <div class="resultCard__inner">
+                  <div class="resultCard__media">
+                    <div class="resultCard__iconWrap">
+                      <div id="resultIcon" class="resultCard__icon">★</div>
+                    </div>
+                    <img id="resultImage" class="resultCard__image" src="fighter.png" alt="Recommended class preview"/>
+                    <div id="resultTagline" class="resultCard__tagline">A reliable class for first-time dungeon runs.</div>
+                  </div>
+
+                  <div class="resultCard__content">
+                    <div class="resultCard__label">Recommended Class</div>
+                    <div id="resultName" class="resultCard__name">Fighter</div>
+
+                    <div class="resultCard__badges">
+                      <div class="miniBadge">
+                        <span class="miniBadge__k">Difficulty:</span>
+                        <span id="resultDifficulty" class="miniBadge__stars">★★★</span>
+                      </div>
+                      <div class="miniBadge">
+                        <span class="miniBadge__k">Best with:</span>
+                        <span id="resultSynergy" class="miniBadge__v">Cleric, Ranger</span>
+                      </div>
+                    </div>
+
+                    <p id="resultSummary" class="resultCard__summary">Based on your answers, this class should feel the most comfortable in your first few dungeon runs.</p>
+                    <p id="resultDesc" class="resultCard__desc"></p>
+                    <div id="resultStarter" class="resultStarter"></div>
+
+                    <div class="resultCard__why">
+                      <div class="resultCard__whyTitle">Why this class?</div>
+                      <ul id="resultReasons" class="resultCard__whyList"></ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="checklist">
+                <h3 class="checklist__title">First-Run Checklist</h3>
+                <div id="checklistItems" class="checklist__items"></div>
+
+                <div id="checklistSuccess" class="success hidden">
+                  <div class="success__emoji">⚔️</div>
+                  <div class="success__title">Ready for the Dungeon!</div>
+                  <div class="success__text">You're all set to begin your adventure. Good luck!</div>
+                </div>
+              </div>
+
+              <div class="result__retake">
+                <button id="btnRetake" class="link link--retake">⟲ Retake Quiz</button>
+                <button id="btnHome" class="link link--retake">🏠 Back to Home</button>
+              </div>
+
+              <div class="explore">
+                <div class="explore__label">Explore More</div>
+                <div class="explore__grid">
+                  <button class="exploreCard" data-nav="#monsters">
+                    <div class="exploreCard__ico exploreCard__ico--red">⚔</div>
+                    <div class="exploreCard__body">
+                      <div class="exploreCard__title">Combat Tutorial</div>
+                      <div class="exploreCard__text">Monster strategies</div>
+                    </div>
+                  </button>
+
+                  <button class="exploreCard" data-nav="#gold">
+                    <div class="exploreCard__ico exploreCard__ico--yellow">⛁</div>
+                    <div class="exploreCard__body">
+                      <div class="exploreCard__title">Gold Guide</div>
+                      <div class="exploreCard__text">Maximize profit</div>
+                    </div>
+                  </button>
+
+                  <button class="exploreCard" data-nav="#class-selection">
+                    <div class="exploreCard__ico exploreCard__ico--amber">⚔</div>
+                    <div class="exploreCard__body">
+                      <div class="exploreCard__title">Class Selection</div>
+                      <div class="exploreCard__text">Browse all classes</div>
+                    </div>
+                  </button>
+
+                  <button class="exploreCard" data-nav="#mechanics">
+                    <div class="exploreCard__ico exploreCard__ico--blue">📜</div>
+                    <div class="exploreCard__body">
+                      <div class="exploreCard__title">Dungeon Mechanics</div>
+                      <div class="exploreCard__text">Core systems</div>
+                    </div>
+                  </button>
+
+                  <button class="exploreCard" data-nav="#artifacts">
+                    <div class="exploreCard__ico exploreCard__ico--purple">✦</div>
+                    <div class="exploreCard__body">
+                      <div class="exploreCard__title">Artifact Gallery</div>
+                      <div class="exploreCard__text">Legendary items</div>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ROUTE: Monsters -->
+      <section id="route_monsters" class="route hidden">
+        <div class="page">
+          <div class="page__head">
+            <div class="page__badge"><span class="page__badgeIco page__badgeIco--red">⚔</span></div>
+            <h1 class="page__title">Combat Tutorial</h1>
+            <p class="page__desc">
+              Learn the basics of PvE combat with short video examples. Start with common enemies, then move into boss mechanics.
+            </p>
+          </div>
+
+          <div class="combatIntro">
+            <div class="combatIntro__card">
+              <div class="combatIntro__k">Best for</div>
+              <div class="combatIntro__v">New players learning PvE</div>
+            </div>
+            <div class="combatIntro__card">
+              <div class="combatIntro__k">How to use</div>
+              <div class="combatIntro__v">Watch one clip, read 3 quick tips, move on</div>
+            </div>
+            <div class="combatIntro__card">
+              <div class="combatIntro__k">Focus</div>
+              <div class="combatIntro__v">Spacing, timing, and audio cues</div>
+            </div>
+          </div>
+
+          <div class="sectionLabel sectionLabel--boss">Boss Tutorial</div>
+          <div id="bossList" class="stack"></div>
+
+          <div class="sectionLabel">Common Enemies</div>
+          <div id="monsterList" class="stack"></div>
+
+          <div class="note note--amber">
+            <div class="note__text">
+              <b>Pro Tip:</b> Do not panic-swing. Most PvE fights become easier when you bait one attack, dodge, and punish after the animation finishes.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ROUTE: Gold -->
+      <section id="route_gold" class="route hidden">
+        <div class="page">
+          <div class="page__head">
+            <div class="page__badge"><span class="page__badgeIco page__badgeIco--yellow">⛁</span></div>
+            <h1 class="page__title">Gold Guide</h1>
+            <p class="page__desc">
+              Learn where gold comes from, how to turn treasure into money, and how to use that gold to improve your kit.
+            </p>
+          </div>
+
+          <div class="goldHero">
+            <div class="goldHero__text">
+              <div class="goldHero__title">Simple Economy Loop</div>
+              <div class="goldHero__desc">
+                Loot treasure → sell treasure or gear → earn gold → upgrade your next run.
+              </div>
+            </div>
+          </div>
+
+          <div id="goldGuideGrid" class="grid2 grid2--wide"></div>
+
+          <div class="note note--blue">
+            <div class="note__text">
+              <b>Beginner Tip:</b> Treasure is the safest way to build early gold. Once you have money, use the Marketplace to improve your gear instead of bringing random weak kits into harder runs.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ROUTE: Class Selection -->
+      <section id="route_classselection" class="route hidden">
+        <div class="page page--flatTop">
+          <div class="stickyTop">
+            <div class="stickyTop__inner">
+              <button class="link link--topBack" data-back="1">← Back</button>
+            </div>
+          </div>
+
+          <div class="page__container">
+            <div class="page__head">
+              <div class="page__badge"><span class="page__badgeIco page__badgeIco--amber">⚔</span></div>
+              <h1 class="page__title">Choose Your Class</h1>
+              <p class="page__desc">
+                Browse the five beginner-friendly classes included in our guide. Each card now includes a visual preview and a fuller summary to make the page easier to scan.
+              </p>
+            </div>
+
+            <div id="classGrid" class="grid2 grid2--wide"></div>
+
+            <div class="note note--muted">
+              <div class="note__label">How to use this page</div>
+              <div class="note__text">
+                Tap any class card to open a larger preview, see strengths and weaknesses, and compare which playstyle fits you best.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ROUTE: Mechanics -->
+      <section id="route_mechanics" class="route hidden">
+        <div class="page">
+          <div class="page__head">
+            <div class="page__badge"><span class="page__badgeIco page__badgeIco--amber">📜</span></div>
+            <h1 class="page__title">Core Dungeon Mechanics</h1>
+            <p class="page__desc">
+              Master the fundamental systems that govern dungeon exploration and survival.
+            </p>
+          </div>
+
+          <div id="mechanicsGrid" class="grid2 grid2--wide"></div>
+
+          <div class="note note--amber">
+            <div class="note__text">
+              <b>Remember:</b> These mechanics work together. A good player uses sound to avoid traps, times extractions perfectly, and manages resources wisely.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ROUTE: Artifacts -->
+      <section id="route_artifacts" class="route hidden">
+        <div class="page">
+          <div class="page__head">
+            <div class="page__badge"><span class="page__badgeIco page__badgeIco--purple">✦</span></div>
+            <h1 class="page__title">Artifact Gallery</h1>
+            <p class="page__desc">
+              Discover legendary items, their origins, and the powerful bosses that guard them.
+            </p>
+          </div>
+
+          <div id="artifactGrid" class="grid2 grid2--wide"></div>
+
+          <div class="note note--amberPurple">
+            <div class="note__text">
+              <b>Collector's Note</b><br/>
+              This gallery showcases just a sample of the treasures waiting to be discovered in the dungeons.
+              More artifacts, detailed images, and complete drop tables will be added in future updates.
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+  <div id="classModal" class="modal hidden" aria-hidden="true">
+    <div id="classModalOverlay" class="modal__overlay"></div>
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="classModalName">
+      <button id="btnCloseClassModal" class="modal__close" aria-label="Close class details">×</button>
+      <div class="modal__grid">
+        <img id="classModalImage" class="modal__image" src="fighter.png" alt="Class preview"/>
+        <div class="modal__content">
+          <div id="classModalRole" class="modal__eyebrow">Frontline DPS</div>
+          <h2 id="classModalName" class="modal__title">Fighter</h2>
+          <p id="classModalDesc" class="modal__desc"></p>
+          <div class="modal__section">
+            <div class="modal__sectionTitle">Why pick this class?</div>
+            <ul id="classModalReasons" class="bullets bullets--tight"></ul>
+          </div>
+          <div class="modal__section">
+            <div class="modal__sectionTitle">Best for beginners who want...</div>
+            <div id="classModalStrengths" class="pills"></div>
+          </div>
+          <div class="modal__section">
+            <div class="modal__sectionTitle">Quick caution</div>
+            <div id="classModalCaution" class="modal__caution"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="artifactModal" class="modal hidden" aria-hidden="true">
+    <div id="artifactModalOverlay" class="modal__overlay"></div>
+    <div class="modal__dialog modal__dialog--artifact" role="dialog" aria-modal="true" aria-labelledby="artifactModalName">
+      <button id="btnCloseArtifactModal" class="modal__close" aria-label="Close artifact details">×</button>
+      <div class="artifactModal__grid">
+        <div class="artifactModal__media">
+          <img id="artifactModalImage" class="artifactModal__image" src="Viola_7.png" alt="Artifact preview"/>
+        </div>
+        <div class="artifactModal__content">
+          <div id="artifactModalType" class="modal__eyebrow">Rapier</div>
+          <h2 id="artifactModalName" class="modal__title">Viola</h2>
+          <div id="artifactModalRarity" class="artifactModal__rarity">Unique</div>
+          <div class="modal__section">
+            <div class="modal__sectionTitle">Effect</div>
+            <div id="artifactModalEffect" class="modal__desc"></div>
+          </div>
+          <div class="modal__section">
+            <div class="modal__sectionTitle">Stats</div>
+            <div id="artifactModalStats" class="kv"></div>
+          </div>
+          <div class="modal__section">
+            <div class="modal__sectionTitle">Lore</div>
+            <div id="artifactModalLore" class="artifactLore"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
